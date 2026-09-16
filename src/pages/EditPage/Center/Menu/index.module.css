@@ -1,0 +1,43 @@
+.main {
+  position: fixed;
+  z-index: 100000;
+  min-width: 132px;
+  padding: 6px;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+  font-size: 13px;
+  color: #333;
+  user-select: none;
+}
+.menu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.menu li {
+  padding: 7px 12px;
+  border-radius: 4px;
+  line-height: 1.4;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+.menu li:hover {
+  background-color: #f0f5ff;
+  color: #0057ff;
+}
+.menu .divider {
+  height: 1px;
+  margin: 6px 4px;
+  padding: 0;
+  background: #f0f0f0;
+  border-radius: 0;
+  cursor: default;
+  pointer-events: none;
+}
+.menu .divider:hover {
+  background: #f0f0f0;
+  color: #333;
+}

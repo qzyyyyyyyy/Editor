@@ -1,0 +1,24 @@
+// 属性面板的一行：标签 + 控件 + 提示
+.main {
+  margin-bottom: 12px;
+
+  label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+  }
+
+  // 让内部控件（input/颜色块等）默认撑满一行
+  > *:not(label):not(.tips) {
+    width: 100%;
+  }
+}
+
+.tips {
+  margin: 4px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #999;
+}

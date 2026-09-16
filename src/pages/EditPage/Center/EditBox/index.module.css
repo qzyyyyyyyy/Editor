@@ -1,0 +1,8 @@
+.main {
+  position: absolute;
+  cursor: move;
+  /* 用 outline 画多选框：不占盒模型空间，不影响 width/height/定位，
+     也不需要 box-sizing 补偿；outline-offset 让框与组件之间留 2px 间隙 */
+  outline: 2px solid red;
+  outline-offset: 2px;
+}

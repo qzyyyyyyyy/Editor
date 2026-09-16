@@ -1,0 +1,64 @@
+// 外层：固定悬浮的黑色工具条。占位高度始终 64px（下方内容区从 64px 开始，不能变），
+// 黑底满宽；缩放时只是内部 .bar 等比缩小，外层黑条始终铺满顶部
+.main {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  width: 100%;
+  height: 72px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center; // 让 .bar 缩放后水平居中，两侧露出黑底
+  color: #fff;
+  background-color: #000;
+  // margin-top: 4px;
+}
+
+// 设计层：按固定 64px 排版，再通过内联 transform: scale() 整体等比缩放。
+// transform-origin: center 保证缩放时内容在 64px 黑条里水平垂直居中；
+// transform 不影响布局，所以 .bar 在布局上仍占满 .main，只影响绘制
+.bar {
+  width: 100%;
+  height: 64px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  line-height: 64px;
+  text-align: center;
+  transform-origin: center;
+}
+
+.item {
+  position: relative;
+  display: flex;
+  align-items: center; // 图标+文字垂直居中（替代无效的 justify-items）
+  justify-content: center; // 整块内容水平居中
+  cursor: pointer; // 整块都是可点击区域，鼠标变手型
+  padding: 0 70px;
+  text-align: center;
+
+  &:hover {
+    background-color: #0057ff;
+  }
+
+  &.release {
+    width: 100px;
+    background-color: #0057ff;
+    &:hover {
+      background-color: #ffe331;
+      span {
+        color: black;
+      }
+    }
+  }
+}
+
+// "查看列表"的 <Link> 渲染成 <a>，默认 inline 撑不满 item 的 padding 区域。
+// 让它撑满父容器，整块 padding 都是点击范围
+.link {
+  display: block;
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
+}

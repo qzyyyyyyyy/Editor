@@ -1,0 +1,51 @@
+.main {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  width: 100%;
+  height: 72px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  color: #fff;
+  background-color: #000;
+}
+.bar {
+  width: 100%;
+  height: 64px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  line-height: 64px;
+  text-align: center;
+  transform-origin: center;
+}
+.item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0 70px;
+  text-align: center;
+}
+.item:hover {
+  background-color: #0057ff;
+}
+.item.release {
+  width: 100px;
+  background-color: #0057ff;
+}
+.item.release:hover {
+  background-color: #ffe331;
+}
+.item.release:hover span {
+  color: black;
+}
+.link {
+  display: block;
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
+}

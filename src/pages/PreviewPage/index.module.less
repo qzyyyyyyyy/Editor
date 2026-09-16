@@ -1,0 +1,27 @@
+// 预览页：灰底居中展示画布
+.main {
+  min-height: 100vh;
+  background: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+  box-sizing: border-box;
+}
+
+// 画布容器：宽高/背景色由 canvas.style 内联提供，这里只补充定位锚点和阴影
+.canvas {
+  position: relative;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.empty {
+  min-height: 100vh;
+  background: #f0f2f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 16px;
+}

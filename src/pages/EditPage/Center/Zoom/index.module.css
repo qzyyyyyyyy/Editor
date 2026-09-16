@@ -1,0 +1,55 @@
+.zoom {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 6px 10px;
+  list-style: none;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  user-select: none;
+  z-index: 100;
+}
+.zoom .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.zoom .icon:hover {
+  background: #e8e8e8;
+}
+.zoom .icon:active {
+  background: #d0d0d0;
+}
+.zoom .num {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: #666;
+}
+.zoom .num input {
+  width: 36px;
+  padding: 0;
+  margin-right: 2px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 13px;
+  color: #333;
+  outline: none;
+}
+.zoom .num input:focus {
+  border-color: #1890ff;
+}
