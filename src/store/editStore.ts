@@ -39,9 +39,9 @@ export const claerCanvas = () => {
   resetZoom()
 }
 
-export const addCmp = (_cmp: ICmp) => {
+export const addCmp = (cmp: ICmp) => {
   useEditStore.setState((draft) => {
-    draft.canvas.cmps.push({ ..._cmp, key: getOnlyKey() })
+    draft.canvas.cmps.push({ ...cmp, key: getOnlyKey() })
     draft.assembly = new Set([draft.canvas.cmps.length - 1])
     recordCanvasChangeHistory(draft)
   })
@@ -340,7 +340,7 @@ export const setCmpSelected = (index: number) => {
   }
 }
 
-// ! 修改组件属性
+// ! 修改组件属性（拖拽、缩放）
 // 根据改变的量来修改
 export const updateAssemblyCmpsByDistance = (newStyle: Style) => {
   useEditStore.setState((draft) => {
@@ -396,7 +396,7 @@ export const updateCanvasStyle = (_style: any) => {
   })
 }
 
-// 修改单个组件的style
+// 修改单个组件的style（属性面板改样式）
 export const updateSelectedCmpStyle = (newStyle: Style) => {
   useEditStore.setState((draft) => {
     Object.assign(
@@ -407,7 +407,7 @@ export const updateSelectedCmpStyle = (newStyle: Style) => {
   })
 }
 
-// 修改单个组件的属性
+// 修改单个组件的属性（属性面板改文字/类型）
 export const updateSelectedCmpAttr = (name: string, value: string) => {
   useEditStore.setState((draft: any) => {
     const selectedIndex = selectedCmpIndexSelector(draft)
@@ -416,7 +416,7 @@ export const updateSelectedCmpAttr = (name: string, value: string) => {
   })
 }
 
-// 修改选中组件的style
+// 修改选中组件的style（面板上点对齐按钮）
 export const editAssemblyStyle = (_style: Style) => {
   useEditStore.setState((draft) => {
     draft.assembly.forEach((index: number) => {
@@ -446,8 +446,6 @@ export const editAssemblyStyle = (_style: Style) => {
   })
 }
 
-export default useEditStore
-
 // 选中的单个组件的index
 export const selectedCmpIndexSelector = (store: EditStoreState): number => {
   const selectedCmpIndex = Array.from(store.assembly)[0]
@@ -471,3 +469,5 @@ function getDefaultCanvas(): ICanvas {
     cmps: []
   }
 }
+
+export default useEditStore
