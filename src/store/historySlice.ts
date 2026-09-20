@@ -31,7 +31,7 @@ export const goPrevCanvasHistory = () => {
     if (newIndex < 0) {
       return
     }
-    // 目标条目不存在才退出（原条件写反，导致永远提前 return）
+    // 目标条目不存在才退出
     if (!draft.canvasChangeHistory[newIndex]) {
       return
     }
@@ -48,7 +48,7 @@ export const goNextCanvasHistory = () => {
     if (newIndex >= draft.canvasChangeHistory.length) {
       return
     }
-    // 目标条目不存在才退出（原条件写反，导致永远提前 return）
+    // 目标条目不存在才退出
     if (!draft.canvasChangeHistory[newIndex]) {
       return
     }

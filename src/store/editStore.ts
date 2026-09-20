@@ -367,6 +367,7 @@ export const updateAssemblyCmpsByDistance = (newStyle: Style) => {
   })
 }
 
+// ! 记录画布变化(防抖去重处理)
 export const recordCanvasChangeHistory_2 = () => {
   const store = useEditStore.getState()
   if (
