@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 
 export type Style = React.CSSProperties
 
@@ -24,8 +24,7 @@ export type EditStoreState = {
   // 选中组件的下标集合（Set 支持多选，add/delete/has 语义清晰）
   assembly: Set<number>
   //记录历史
-  canvasChangeHistory: Array<{canvas: ICanvas; assembly: Set<number>}>
+  canvasChangeHistory: Array<{ canvas: ICanvas; assembly: Set<number> }>
   // 记录当前操作索引
   canvasChangeHistoryIndex: number
 }
-

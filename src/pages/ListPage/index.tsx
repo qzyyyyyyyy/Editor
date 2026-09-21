@@ -1,7 +1,7 @@
-import { Card, Divider, Table, Space, Button, message } from "antd"
-import { Link } from "react-router-dom"
-import { useEffect, useState } from "react"
-import { getCanvasList, del, type ListItem } from "@/request/list"
+import { Card, Divider, Table, Space, Button, message } from 'antd'
+import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { getCanvasList, del, type ListItem } from '@/services/canvasService'
 
 export default function ListPage() {
   const [messageApi, contextHolder] = message.useMessage()
@@ -9,11 +9,11 @@ export default function ListPage() {
 
   const fresh = () => {
     getCanvasList(
-      "",
+      '',
       (res) => {
         setList(res.content || [])
       },
-      (msg) => messageApi.error(msg),
+      (msg) => messageApi.error(msg)
     )
   }
 
@@ -27,30 +27,30 @@ export default function ListPage() {
     del(
       { id },
       () => {
-        messageApi.success("删除成功")
+        messageApi.success('删除成功')
         fresh()
       },
-      (msg) => messageApi.error(msg),
+      (msg) => messageApi.error(msg)
     )
   }
 
   const columns = [
     {
-      title: "id",
-      key: "id",
+      title: 'id',
+      key: 'id',
       render: (item: ListItem) => <Link to={editUrl(item)}>{item.id}</Link>,
     },
     {
-      title: "标题",
-      key: "title",
+      title: '标题',
+      key: 'title',
       render: (item: ListItem) => {
-        const title = item.title || "未命名"
+        const title = item.title || '未命名'
         return <Link to={editUrl(item)}>{title}</Link>
       },
     },
     {
-      title: "动作",
-      key: "action",
+      title: '动作',
+      key: 'action',
       render: (item: ListItem) => {
         const { id } = item
         return (
@@ -58,7 +58,7 @@ export default function ListPage() {
             <a
               target="_blank"
               rel="noreferrer"
-              href={"https://builder-lesson.vercel.app/?id=" + id}
+              href={'https://builder-lesson.vercel.app/?id=' + id}
             >
               线上查看（切移动端）
             </a>

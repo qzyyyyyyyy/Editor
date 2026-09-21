@@ -1,14 +1,14 @@
-import classNames from "classnames";
-import styles from "./index.module.less";
-import useZoomStore from "@/store/zoomStore";
+import classNames from 'classnames'
+import styles from './index.module.less'
+import useZoomStore from '@/store/zoomStore'
 
 export default function Zoom() {
-  const { zoom, zoomIn, zoomOut, setZoom } = useZoomStore();
+  const { zoom, zoomIn, zoomOut, setZoom } = useZoomStore()
   return (
     <ul className={styles.zoom}>
       <li
         className={classNames(styles.icon)}
-        style={{ cursor: "zoom-in" }}
+        style={{ cursor: 'zoom-in' }}
         onClick={zoomOut}
       >
         +
@@ -17,19 +17,19 @@ export default function Zoom() {
         <input
           type="num"
           value={zoom}
-          onChange={(e: any) => {
-            setZoom(e.target.value);
+          onChange={(e) => {
+            setZoom(parseInt(e.target.value) || 1)
           }}
         />
         %
       </li>
       <li
         className={classNames(styles.icon)}
-        style={{ cursor: "zoom-out" }}
+        style={{ cursor: 'zoom-out' }}
         onClick={zoomIn}
       >
         -
       </li>
     </ul>
-  );
+  )
 }

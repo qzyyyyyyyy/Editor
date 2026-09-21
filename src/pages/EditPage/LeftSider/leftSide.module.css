@@ -44,7 +44,9 @@
   color: #666;
   text-align: center;
   cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
+  transition:
+    border-color 0.2s,
+    color 0.2s;
 }
 .upload:hover {
   border-color: #1677ff;

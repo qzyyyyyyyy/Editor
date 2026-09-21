@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from "react"
-import { SketchPicker } from "react-color"
+import { useState, useRef, useEffect } from 'react'
+import { SketchPicker } from 'react-color'
 
 export default function InputColor({ onChangeComplete, color, ...rest }: any) {
   const [visible, setVisible] = useState(false)
@@ -14,23 +14,23 @@ export default function InputColor({ onChangeComplete, color, ...rest }: any) {
         setVisible(false)
       }
     }
-    document.addEventListener("mousedown", onDocMouseDown)
-    return () => document.removeEventListener("mousedown", onDocMouseDown)
+    document.addEventListener('mousedown', onDocMouseDown)
+    return () => document.removeEventListener('mousedown', onDocMouseDown)
   }, [visible])
 
   return (
     <div
       ref={rootRef}
       style={{
-        position: "relative",
-        boxSizing: "border-box",
-        width: "100%",
+        position: 'relative',
+        boxSizing: 'border-box',
+        width: '100%',
         minHeight: 32,
         padding: 4,
         backgroundColor: color,
-        border: "1px solid #d9d9d9",
+        border: '1px solid #d9d9d9',
         borderRadius: 4,
-        cursor: "pointer"
+        cursor: 'pointer',
       }}
       {...rest}
       onClick={() => {
@@ -41,13 +41,13 @@ export default function InputColor({ onChangeComplete, color, ...rest }: any) {
         <div
           style={{
             zIndex: 1,
-            position: "relative",
-            marginTop: "32px",
-            marginLeft: "-70px",
-            padding: "10px",
-            width: "340px",
-            border: "solid 1px #333",
-            backgroundColor: "white"
+            position: 'relative',
+            marginTop: '32px',
+            marginLeft: '-70px',
+            padding: '10px',
+            width: '340px',
+            border: 'solid 1px #333',
+            backgroundColor: 'white',
           }}
           onClick={(e) => {
             // 阻止点击面板内部时冒泡到外层色块的 toggle
@@ -57,11 +57,11 @@ export default function InputColor({ onChangeComplete, color, ...rest }: any) {
           <span
             style={{
               zIndex: 999,
-              position: "absolute",
+              position: 'absolute',
               top: 0,
-              left: "4px",
-              color: "#999",
-              cursor: "pointer"
+              left: '4px',
+              color: '#999',
+              cursor: 'pointer',
             }}
             onClick={(e) => {
               e.stopPropagation()

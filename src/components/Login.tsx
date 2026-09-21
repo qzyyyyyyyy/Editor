@@ -1,14 +1,13 @@
-import { Button, Form, Input, Checkbox, Modal, message } from "antd"
-import { login, logout } from "../request/user"
-import { register } from "../request/register"
-import docCookies from "../utils/cookies"
+import { Button, Form, Input, Checkbox, Modal, message } from 'antd'
+import { login, logout, register } from '@/services/authService'
+import docCookies from '../utils/cookies'
 
 export default function Login() {
   const [messageApi, contextHolder] = message.useMessage()
 
   // 校验登录
-  const auth = docCookies.getItem("sessionId")
-  const name = docCookies.getItem("name")
+  const auth = docCookies.getItem('sessionId')
+  const name = docCookies.getItem('name')
 
   const handleOk = () => {
     window.location.reload()
@@ -20,11 +19,11 @@ export default function Login() {
       <>
         {contextHolder}
         <Button
-          style={{ float: "right", marginTop: 16 }}
+          style={{ float: 'right', marginTop: 16 }}
           onClick={() =>
             logout(
               () => {
-                messageApi.success("已退出登录")
+                messageApi.success('已退出登录')
                 handleOk()
               },
               (msg) => messageApi.error(msg)
@@ -41,7 +40,7 @@ export default function Login() {
   const onFinish = ({
     name,
     password,
-    register_login
+    register_login,
   }: {
     name: string
     password: string
@@ -53,7 +52,7 @@ export default function Login() {
       login(
         { name, password },
         () => {
-          messageApi.success("登录成功")
+          messageApi.success('登录成功')
           handleOk()
         },
         (msg) => messageApi.error(msg)
@@ -62,18 +61,18 @@ export default function Login() {
   }
 
   const onFinishFailed = () => {
-    messageApi.warning("请先完整填写用户名和密码")
+    messageApi.warning('请先完整填写用户名和密码')
   }
 
   const registerAndLogin = (values: { name: string; password: string }) => {
     register(
       values,
       () => {
-        messageApi.success("注册成功，正在登录...")
+        messageApi.success('注册成功，正在登录...')
         login(
           values,
           () => {
-            messageApi.success("登录成功")
+            messageApi.success('登录成功')
             handleOk()
           },
           (msg) => messageApi.error(msg)
@@ -90,13 +89,13 @@ export default function Login() {
       <Form
         name="basic"
         labelCol={{
-          span: 8
+          span: 8,
         }}
         wrapperCol={{
-          span: 16
+          span: 16,
         }}
         initialValues={{
-          remember: true
+          remember: true,
         }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
@@ -108,8 +107,8 @@ export default function Login() {
           rules={[
             {
               required: true,
-              message: "请输入用户名!"
-            }
+              message: '请输入用户名!',
+            },
           ]}
         >
           <Input placeholder="至少 2 个字符" />
@@ -120,8 +119,8 @@ export default function Login() {
           rules={[
             {
               required: true,
-              message: "请输入密码!"
-            }
+              message: '请输入密码!',
+            },
           ]}
         >
           <Input.Password placeholder="至少 4 位" />
@@ -136,7 +135,7 @@ export default function Login() {
         <Form.Item
           wrapperCol={{
             offset: 8,
-            span: 16
+            span: 16,
           }}
         >
           <Button type="primary" htmlType="submit">

@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react"
-import styles from "./index.module.less"
-import { Link, useNavigate } from "react-router-dom"
-import classNames from "classnames"
-import { DownloadOutlined } from "@ant-design/icons"
-import { useCanvasId, useCanvasType } from "@/store/hooks"
-import { saveCanvas, claerCanvas } from "@/store/editStore"
-import { message } from "antd"
-import { goPrevCanvasHistory, goNextCanvasHistory } from "@/store/historySlice"
-import { exportCanvasAsImage } from "@/utils/exportImage"
+import { useEffect, useState } from 'react'
+import styles from './index.module.less'
+import { Link, useNavigate } from 'react-router-dom'
+import classNames from 'classnames'
+import { DownloadOutlined } from '@ant-design/icons'
+import { useCanvasId, useCanvasType } from '@/store/hooks'
+import { saveCanvas, clearCanvas } from '@/store/editStore'
+import { message } from 'antd'
+import { goPrevCanvasHistory, goNextCanvasHistory } from '@/store/historySlice'
+import useEditStore from '@/store/editStore'
+import { exportCanvasAsImage } from '@/utils/exportImage'
 
 // 工具条等比缩放：以设计稿宽度 1200px 为基准，窗口变窄时整体缩小；
 // 最小 0.6（太窄就不再缩，避免文字糊掉），最大 1（大屏不放大，避免盖住下方内容区）
@@ -21,8 +22,8 @@ function useHeaderScale() {
       setScale(Math.min(1, Math.max(0.6, s)))
     }
     compute()
-    window.addEventListener("resize", compute)
-    return () => window.removeEventListener("resize", compute)
+    window.addEventListener('resize', compute)
+    return () => window.removeEventListener('resize', compute)
   }, [])
 
   return scale
@@ -40,13 +41,13 @@ export default function Header() {
     if (id === null) {
       // 新增：保存后跳转到带新 id 的 URL，replace 避免在历史中留下无 id 的中间态
       navigate(`?id=${savedId}`, { replace: true })
-      message.success("新增成功")
+      message.success('新增成功')
     }
   }
 
   const saveAndPreview = () => {
     const savedId = saveCanvas(id, type)
-    message.success("保存成功")
+    message.success('保存成功')
 
     if (id === null) {
       // 新增：同步 URL，replace 避免历史中留下无 id 的中间态
@@ -58,7 +59,7 @@ export default function Header() {
   }
 
   const emptyCanvas = () => {
-    claerCanvas()
+    clearCanvas()
   }
 
   // 导出画布为 PNG：异步截图期间防重复点击，并给出加载/结果反馈
@@ -68,12 +69,13 @@ export default function Header() {
       return
     }
     setExporting(true)
-    const hide = message.loading("正在导出图片...", 0)
+    const hide = message.loading('正在导出图片...', 0)
     try {
-      await exportCanvasAsImage()
-      message.success("导出成功")
+      const canvas = useEditStore.getState().canvas
+      await exportCanvasAsImage(canvas)
+      message.success('导出成功')
     } catch {
-      message.error("导出失败，请重试")
+      message.error('导出失败，请重试')
     } finally {
       hide()
       setExporting(false)
@@ -92,14 +94,14 @@ export default function Header() {
 
         <div className={classNames(styles.item)} onClick={save}>
           <span>
-            <i className={classNames("iconfont icon-baocun", styles.icon)}></i>
+            <i className={classNames('iconfont icon-baocun', styles.icon)}></i>
           </span>
           <span className={styles.txt}>保存</span>
         </div>
 
         <div className={classNames(styles.item)} onClick={saveAndPreview}>
           <span>
-            <i className={classNames("iconfont icon-baocun", styles.icon)}></i>
+            <i className={classNames('iconfont icon-baocun', styles.icon)}></i>
           </span>
           <span className={styles.txt}>保存并预览</span>
         </div>
@@ -115,21 +117,31 @@ export default function Header() {
           <span className={styles.txt}>导出图片</span>
         </div>
 
-        <div className={classNames(styles.item)} onClick={goPrevCanvasHistory}>
+        <div
+          className={classNames(styles.item)}
+          onClick={() =>
+            useEditStore.setState((draft) => goPrevCanvasHistory(draft))
+          }
+        >
           <span>
             <i
-              className={classNames("iconfont icon-shangyibu", styles.icon)}
+              className={classNames('iconfont icon-shangyibu', styles.icon)}
             ></i>
           </span>
           <span className={styles.txt}>上一步</span>
           <span className={styles.shortKey}>CMD+Z</span>
         </div>
 
-        <div className={classNames(styles.item)} onClick={goNextCanvasHistory}>
+        <div
+          className={classNames(styles.item)}
+          onClick={() =>
+            useEditStore.setState((draft) => goNextCanvasHistory(draft))
+          }
+        >
           <span>
             <i
-              className={classNames("iconfont icon-xiayibu", styles.icon)}
-              style={{ transform: "rotateY(180deg)" }}
+              className={classNames('iconfont icon-xiayibu', styles.icon)}
+              style={{ transform: 'rotateY(180deg)' }}
             ></i>
           </span>
           <span className={styles.txt}>下一步</span>
@@ -138,7 +150,7 @@ export default function Header() {
 
         <div className={classNames(styles.item)} onClick={emptyCanvas}>
           <span>
-            <i className={classNames("iconfont icon-qingchu", styles.icon)}></i>
+            <i className={classNames('iconfont icon-qingchu', styles.icon)}></i>
           </span>
           <span className={styles.txt}>清空</span>
         </div>

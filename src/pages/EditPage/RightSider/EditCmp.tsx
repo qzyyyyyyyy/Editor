@@ -1,21 +1,21 @@
-import InputColor from "@/lib/InputColor"
-import Item from "@/lib/Item"
+import InputColor from '@/lib/InputColor'
+import Item from '@/lib/Item'
 import {
   editAssemblyStyle,
   updateSelectedCmpAttr,
-  updateSelectedCmpStyle
-} from "@/store/editStore"
-import type { ICmpWithKey, Style } from "@/store/editStoreTypes"
-import { isImgComponent } from "@/utils/const"
-import styles from "./edit.module.less"
+  updateSelectedCmpStyle,
+} from '@/store/editStore'
+import type { ICmpWithKey, Style } from '@/store/editStoreTypes'
+import { isImgComponent } from '@/utils/const'
+import styles from './edit.module.less'
 
 export default function EditCmp({ selectedCmp }: { selectedCmp: ICmpWithKey }) {
-  const { value, style, onClick = "" } = selectedCmp
+  const { value, style, onClick = '' } = selectedCmp
 
   // 修改组件value文本内容（图片描述/文字组件文字）
   const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value
-    updateSelectedCmpAttr("value", newValue)
+    updateSelectedCmpAttr('value', newValue)
   }
 
   // 修改style样式属性
@@ -60,8 +60,8 @@ export default function EditCmp({ selectedCmp }: { selectedCmp: ICmpWithKey }) {
             value={style.fontSize}
             onChange={(e) => {
               handleStyleChange(e, {
-                name: "fontSize",
-                value: parseInt(e.target.value) || 0
+                name: 'fontSize',
+                value: parseInt(e.target.value) || 0,
               })
             }}
           />
@@ -76,8 +76,8 @@ export default function EditCmp({ selectedCmp }: { selectedCmp: ICmpWithKey }) {
             value={style.fontWeight}
             onChange={(e) => {
               handleStyleChange(e, {
-                name: "fontWeight",
-                value: e.target.value
+                name: 'fontWeight',
+                value: e.target.value,
               })
             }}
           >
@@ -95,14 +95,14 @@ export default function EditCmp({ selectedCmp }: { selectedCmp: ICmpWithKey }) {
             type="number"
             className={styles.itemRight}
             value={
-              typeof style.lineHeight === "string"
+              typeof style.lineHeight === 'string'
                 ? parseFloat(style.lineHeight) || 0
                 : style.lineHeight
             }
             onChange={(e) => {
               handleStyleChange(e, {
-                name: "lineHeight",
-                value: `${parseFloat(e.target.value) || 0}px`
+                name: 'lineHeight',
+                value: `${parseFloat(e.target.value) || 0}px`,
               })
             }}
           />
@@ -114,11 +114,11 @@ export default function EditCmp({ selectedCmp }: { selectedCmp: ICmpWithKey }) {
         <Item label="文字装饰:">
           <select
             className={styles.itemRight}
-            value={style.textDecoration || "none"}
+            value={style.textDecoration || 'none'}
             onChange={(e) => {
               handleStyleChange(e, {
-                name: "textDecoration",
-                value: e.target.value
+                name: 'textDecoration',
+                value: e.target.value,
               })
             }}
           >
@@ -138,8 +138,8 @@ export default function EditCmp({ selectedCmp }: { selectedCmp: ICmpWithKey }) {
             value={style.textAlign}
             onChange={(e) => {
               handleStyleChange(e, {
-                name: "textAlign",
-                value: e.target.value
+                name: 'textAlign',
+                value: e.target.value,
               })
             }}
           >
@@ -159,8 +159,8 @@ export default function EditCmp({ selectedCmp }: { selectedCmp: ICmpWithKey }) {
               rgb: { r: number; g: number; b: number; a?: number }
             }) => {
               handleStyleChange(null, {
-                name: "backgroundColor",
-                value: `rgba(${Object.values(e.rgb).join(",")})`
+                name: 'backgroundColor',
+                value: `rgba(${Object.values(e.rgb).join(',')})`,
               })
             }}
           />
@@ -176,8 +176,8 @@ export default function EditCmp({ selectedCmp }: { selectedCmp: ICmpWithKey }) {
               rgb: { r: number; g: number; b: number; a?: number }
             }) => {
               handleStyleChange(null, {
-                name: "color",
-                value: `rgba(${Object.values(e.rgb).join(",")})`
+                name: 'color',
+                value: `rgba(${Object.values(e.rgb).join(',')})`,
               })
             }}
           />
@@ -192,8 +192,8 @@ export default function EditCmp({ selectedCmp }: { selectedCmp: ICmpWithKey }) {
           value={onClick}
           onChange={(e) => {
             handleAttrChange(e, {
-              name: "onClick",
-              value: e.target.value
+              name: 'onClick',
+              value: e.target.value,
             })
           }}
         />
@@ -207,23 +207,23 @@ export default function EditCmp({ selectedCmp }: { selectedCmp: ICmpWithKey }) {
             const align = e.target.value
             let newStyle: Style = {}
             switch (align) {
-              case "left":
+              case 'left':
                 newStyle.left = 0
                 break
-              case "right":
+              case 'right':
                 newStyle.right = 0
                 break
-              case "x-center":
-                newStyle.left = "center"
+              case 'x-center':
+                newStyle.left = 'center'
                 break
-              case "top":
+              case 'top':
                 newStyle.top = 0
                 break
-              case "bottom":
+              case 'bottom':
                 newStyle.bottom = 0
                 break
-              case "y-center":
-                newStyle.top = "center"
+              case 'y-center':
+                newStyle.top = 'center'
                 break
             }
             editAssemblyStyle(newStyle)

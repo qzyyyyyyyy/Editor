@@ -1,8 +1,8 @@
-import { updateAssemblyCmpsByDistance } from "@/store/editStore"
-import styles from "./index.module.less"
-import { throttle } from "lodash-es"
-import { recordCanvasChangeHistory_2 } from "@/store/editStore"
-import type { MouseEvent } from "react"
+import { updateAssemblyCmpsByDistance } from '@/store/editStore'
+import styles from './index.module.less'
+import { throttle } from 'lodash-es'
+import { commitHistoryIfChanged } from '@/store/editStore'
+import type { MouseEvent } from 'react'
 
 interface IStretchProps {
   zoom: number
@@ -37,11 +37,11 @@ export default function StretchDots(props: IStretchProps) {
 
       let newStyle: any = {}
       if (direction) {
-        if (direction.indexOf("top") >= 0) {
+        if (direction.indexOf('top') >= 0) {
           disY = 0 - disY
           newStyle.top = -disY
         }
-        if (direction.indexOf("left") >= 0) {
+        if (direction.indexOf('left') >= 0) {
           disX = 0 - disX
           newStyle.left = -disX
         }
@@ -55,12 +55,12 @@ export default function StretchDots(props: IStretchProps) {
     }, 50)
 
     const up = () => {
-      recordCanvasChangeHistory_2()
-      document.removeEventListener("mousemove", move)
-      document.removeEventListener("mouseup", up)
+      commitHistoryIfChanged()
+      document.removeEventListener('mousemove', move)
+      document.removeEventListener('mouseup', up)
     }
-    document.addEventListener("mousemove", move)
-    document.addEventListener("mouseup", up)
+    document.addEventListener('mousemove', move)
+    document.addEventListener('mouseup', up)
   }
 
   return (
@@ -72,7 +72,7 @@ export default function StretchDots(props: IStretchProps) {
           top: -10,
           left: -10,
           transform,
-          cursor: "nwse-resize"
+          cursor: 'nwse-resize',
         }}
         data-direction="top, left"
         onMouseDown={onMouseDown}
@@ -84,7 +84,7 @@ export default function StretchDots(props: IStretchProps) {
           top: -10,
           left: width / 2 - 8,
           transform,
-          cursor: "row-resize"
+          cursor: 'row-resize',
         }}
         data-direction="top"
         onMouseDown={onMouseDown}
@@ -96,7 +96,7 @@ export default function StretchDots(props: IStretchProps) {
           top: -10,
           left: width - 5,
           transform,
-          cursor: "nesw-resize"
+          cursor: 'nesw-resize',
         }}
         data-direction="top right"
         onMouseDown={onMouseDown}
@@ -108,7 +108,7 @@ export default function StretchDots(props: IStretchProps) {
           top: height / 2 - 8,
           left: width - 5,
           transform,
-          cursor: "col-resize"
+          cursor: 'col-resize',
         }}
         data-direction="right"
         onMouseDown={onMouseDown}
@@ -120,7 +120,7 @@ export default function StretchDots(props: IStretchProps) {
           top: height - 5,
           left: width - 5,
           transform,
-          cursor: "nwse-resize"
+          cursor: 'nwse-resize',
         }}
         data-direction="bottom right"
         onMouseDown={onMouseDown}
@@ -132,7 +132,7 @@ export default function StretchDots(props: IStretchProps) {
           top: height - 5,
           left: width / 2 - 8,
           transform,
-          cursor: "row-resize"
+          cursor: 'row-resize',
         }}
         data-direction="bottom"
         onMouseDown={onMouseDown}
@@ -144,7 +144,7 @@ export default function StretchDots(props: IStretchProps) {
           top: height - 5,
           left: -10,
           transform,
-          cursor: "nesw-resize"
+          cursor: 'nesw-resize',
         }}
         data-direction="bottom left"
         onMouseDown={onMouseDown}
@@ -156,7 +156,7 @@ export default function StretchDots(props: IStretchProps) {
           top: height / 2 - 8,
           left: -10,
           transform,
-          cursor: "col-resize"
+          cursor: 'col-resize',
         }}
         data-direction="left"
         onMouseDown={onMouseDown}

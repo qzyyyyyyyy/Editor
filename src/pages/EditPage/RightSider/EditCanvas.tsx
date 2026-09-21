@@ -1,18 +1,18 @@
-import InputColor from "@/lib/InputColor";
-import Item from "@/lib/Item";
-import { updateCanvasStyle, updateCanvasTitle } from "@/store/editStore";
-import type { ICanvas } from "@/store/editStoreTypes";
-import styles from "./edit.module.less";
+import InputColor from '@/lib/InputColor'
+import Item from '@/lib/Item'
+import { updateCanvasStyle, updateCanvasTitle } from '@/store/editStore'
+import type { ICanvas } from '@/store/editStoreTypes'
+import styles from './edit.module.less'
 
 export default function EditCanvas({ canvas }: { canvas: ICanvas }) {
-  const style = canvas.style;
+  const style = canvas.style
 
   const handleStyleChange = (
     _e: React.ChangeEvent<HTMLInputElement>,
     { name, value }: { name: string; value: number | string }
   ) => {
-    updateCanvasStyle({ [name]: value });
-  };
+    updateCanvasStyle({ [name]: value })
+  }
 
   return (
     <div className={styles.main}>
@@ -24,8 +24,8 @@ export default function EditCanvas({ canvas }: { canvas: ICanvas }) {
           className={styles.itemRight}
           value={canvas.title}
           onChange={(e) => {
-            let newValue = e.target.value;
-            updateCanvasTitle(newValue);
+            let newValue = e.target.value
+            updateCanvasTitle(newValue)
           }}
         />
       </Item>
@@ -37,9 +37,9 @@ export default function EditCanvas({ canvas }: { canvas: ICanvas }) {
           value={style.width}
           onChange={(e) => {
             handleStyleChange(e, {
-              name: "width",
+              name: 'width',
               value: parseInt(e.target.value) - 0,
-            });
+            })
           }}
         />
       </Item>
@@ -51,9 +51,9 @@ export default function EditCanvas({ canvas }: { canvas: ICanvas }) {
           value={style.height}
           onChange={(e) => {
             handleStyleChange(e, {
-              name: "height",
+              name: 'height',
               value: parseInt(e.target.value) - 0,
-            });
+            })
           }}
         />
       </Item>
@@ -64,9 +64,9 @@ export default function EditCanvas({ canvas }: { canvas: ICanvas }) {
           color={style.backgroundColor}
           onChangeComplete={(e: any) => {
             handleStyleChange(e, {
-              name: "backgroundColor",
-              value: `rgba(${Object.values(e.rgb).join(",")})`,
-            });
+              name: 'backgroundColor',
+              value: `rgba(${Object.values(e.rgb).join(',')})`,
+            })
           }}
         />
       </Item>
@@ -78,12 +78,12 @@ export default function EditCanvas({ canvas }: { canvas: ICanvas }) {
           value={style.backgroundImage}
           onChange={(e) => {
             handleStyleChange(e, {
-              name: "backgroundImage",
+              name: 'backgroundImage',
               value: e.target.value,
-            });
+            })
           }}
         />
       </Item>
     </div>
-  );
+  )
 }

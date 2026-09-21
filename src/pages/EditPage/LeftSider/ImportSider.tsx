@@ -1,10 +1,10 @@
-import { useRef } from "react"
-import type { ChangeEvent } from "react"
-import { UploadOutlined } from "@ant-design/icons"
-import { message } from "antd"
-import leftSideStyles from "./leftSide.module.less"
-import { addCmp } from "@/store/editStore"
-import { defaultComponentStyle, isImgComponent } from "@/utils/const"
+import { useRef } from 'react'
+import type { ChangeEvent } from 'react'
+import { UploadOutlined } from '@ant-design/icons'
+import { message } from 'antd'
+import leftSideStyles from './leftSide.module.less'
+import { addCmp } from '@/store/editStore'
+import { defaultComponentStyle, isImgComponent } from '@/utils/const'
 
 // 导入图片在 320x568 画布上的最大占位，超出按比例缩小
 const MAX_WIDTH = 200
@@ -39,7 +39,7 @@ const ImportSider = () => {
   const onFilesChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? [])
     // 先清空 value：否则连续两次选同一个文件不会再触发 change
-    e.target.value = ""
+    e.target.value = ''
     if (files.length === 0) {
       return
     }
@@ -47,7 +47,7 @@ const ImportSider = () => {
     let imported = 0
     for (let i = 0; i < files.length; i++) {
       const file = files[i]
-      if (!file.type.startsWith("image/")) {
+      if (!file.type.startsWith('image/')) {
         message.warning(`「${file.name}」不是图片，已跳过`)
         continue
       }
@@ -69,8 +69,8 @@ const ImportSider = () => {
             width: Math.round(rawWidth * scale),
             height: Math.round(rawHeight * scale),
             top: offset,
-            left: offset
-          }
+            left: offset,
+          },
         })
         imported++
       } catch {

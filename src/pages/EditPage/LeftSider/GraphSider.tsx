@@ -1,32 +1,32 @@
-import leftSideStyles from "./leftSide.module.less"
-import { addCmp } from "@/store/editStore"
-import type { CSSProperties } from "react"
-import { defaultComponentStyle, isGraphComponent } from "@/utils/const"
+import leftSideStyles from './leftSide.module.less'
+import { addCmp } from '@/store/editStore'
+import type { CSSProperties } from 'react'
+import { defaultComponentStyle, isGraphComponent } from '@/utils/const'
 
 const defaultStyle: CSSProperties = {
   ...defaultComponentStyle,
   width: 120,
   height: 120,
-  borderColor: "blue",
-  backgroundColor: "blue"
+  borderColor: 'blue',
+  backgroundColor: 'blue',
 }
 
 const settings = [
   {
-    key: "graph0",
-    value: "",
+    key: 'graph0',
+    value: '',
     style: {
       ...defaultStyle,
       borderWidth: 1,
-      borderStyle: "solid",
-      backgroundColor: "transparent"
-    }
+      borderStyle: 'solid',
+      backgroundColor: 'transparent',
+    },
   },
   {
-    key: "graph1",
-    value: "",
-    style: defaultStyle
-  }
+    key: 'graph1',
+    value: '',
+    style: defaultStyle,
+  },
 ]
 
 const GraphSider = () => {
@@ -41,7 +41,7 @@ const GraphSider = () => {
             onClick={() => addCmp({ ...item, type: isGraphComponent })}
             onDragStart={(e) => {
               e.dataTransfer.setData(
-                "drag-cap",
+                'drag-cap',
                 JSON.stringify({ ...item, type: isGraphComponent })
               )
             }}
@@ -50,7 +50,7 @@ const GraphSider = () => {
               height: item.style.height,
               backgroundColor: item.style.backgroundColor,
               borderStyle: item.style.borderStyle,
-              borderColor: item.style.borderColor
+              borderColor: item.style.borderColor,
             }}
           ></li>
         ))}

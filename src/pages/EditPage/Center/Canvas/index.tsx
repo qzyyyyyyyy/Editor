@@ -1,10 +1,10 @@
-import styles from "./index.module.less"
-import useEditStore, { addCmp } from "@/store/editStore"
-import type { ICmp } from "@/store/editStoreTypes"
-import Cmp from "../Cmp"
-import EditBox from "../EditBox"
-import type { DragEvent } from "react"
-import useZoomStore from "@/store/zoomStore"
+import styles from './index.module.less'
+import useEditStore, { addCmp } from '@/store/editStore'
+import type { ICmp } from '@/store/editStoreTypes'
+import Cmp from '../Cmp'
+import EditBox from '../EditBox'
+import type { DragEvent } from 'react'
+import useZoomStore from '@/store/zoomStore'
 export default function Canvas() {
   const zoom = useZoomStore((state) => state.zoom)
   const canvas = useEditStore((state) => state.canvas)
@@ -13,7 +13,7 @@ export default function Canvas() {
   const onDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     //读取拖拽数据
-    const raw = e.dataTransfer.getData("drag-cap")
+    const raw = e.dataTransfer.getData('drag-cap')
     if (!raw) {
       return
     }
@@ -25,7 +25,7 @@ export default function Canvas() {
     const canvasRect = e.currentTarget.getBoundingClientRect()
     const canvasDomPos = {
       top: canvasRect.top + window.scrollY,
-      left: canvasRect.left + window.scrollX
+      left: canvasRect.left + window.scrollX,
     }
 
     // 视觉坐标 → 画布坐标系坐标（除以缩放比例还原）
@@ -45,8 +45,8 @@ export default function Canvas() {
       className={styles.main}
       style={{
         ...canvas.style,
-        backgroundImage: `url(${styles.backgroundImage})` ,
-        transform: `scale(${zoom / 100})`
+        backgroundImage: `url(${styles.backgroundImage})`,
+        transform: `scale(${zoom / 100})`,
       }}
       onDrop={onDrop}
       onDragOver={(e: DragEvent<HTMLDivElement>) => e.preventDefault()}

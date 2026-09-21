@@ -1,9 +1,9 @@
-import { useState } from "react"
-import useEditStore from "@/store/editStore"
-import EditCmp from "./EditCmp"
-import EditCanvas from "./EditCanvas"
-import EditMultiCmps from "./EditMultiCmps"
-import styles from "./index.module.less"
+import { useState } from 'react'
+import useEditStore from '@/store/editStore'
+import EditCmp from './EditCmp'
+import EditCanvas from './EditCanvas'
+import EditMultiCmps from './EditMultiCmps'
+import styles from './index.module.less'
 
 // 画布
 export default function RightSider() {
@@ -22,7 +22,7 @@ export default function RightSider() {
           setShowEdit(!showEdit)
         }}
       >
-        {showEdit ? "隐藏编辑区域" : "显示编辑区域"}
+        {showEdit ? '隐藏编辑区域' : '显示编辑区域'}
       </div>
 
       {showEdit &&

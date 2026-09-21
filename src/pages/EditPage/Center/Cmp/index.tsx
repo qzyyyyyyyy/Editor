@@ -1,11 +1,11 @@
-import type { ICmpWithKey } from "@/store/editStoreTypes"
-import type { MouseEvent } from "react"
-import styles from "./index.module.less"
-import { isTextComponent, isImgComponent } from "@/utils/const"
-import { Text, Img } from "./CmpDetail"
-import classNames from "classnames"
-import { pick, omit } from "lodash-es"
-import { setCmpsSelected, setCmpSelected } from "@/store/editStore"
+import type { ICmpWithKey } from '@/store/editStoreTypes'
+import type { MouseEvent } from 'react'
+import styles from './index.module.less'
+import { isTextComponent, isImgComponent } from '@/utils/const'
+import { Text, Img } from './CmpDetail'
+import classNames from 'classnames'
+import { pick, omit } from 'lodash-es'
+import { setCmpsSelected, setCmpSelected } from '@/store/editStore'
 
 interface ICmpProps {
   cmp: ICmpWithKey
@@ -26,13 +26,13 @@ export default function Cmp(props: ICmpProps) {
     }
   }
 
-  const outerStyle = pick(style, ["position", "top", "left", "width", "height"])
+  const outerStyle = pick(style, ['position', 'top', 'left', 'width', 'height'])
 
-  const innerStyle = omit(style, "position", "top", "left")
+  const innerStyle = omit(style, 'position', 'top', 'left')
 
   return (
     <div
-      className={classNames(styles.main, isSelected && "selectedBorder")}
+      className={classNames(styles.main, isSelected && 'selectedBorder')}
       style={{
         ...outerStyle,
         zIndex: isSelected ? 9999 : index,

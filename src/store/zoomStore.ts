@@ -1,11 +1,12 @@
-import { create } from "zustand";
-import { immer } from "zustand/middleware/immer";
+import { create } from 'zustand'
+import { immer } from 'zustand/middleware/immer'
 
 interface IZoomStore {
-  zoom: number;
-  zoomOut: () => void;
-  zoomIn: () => void;
-  setZoom: (_zoom: number) => void;
+  zoom: number
+  zoomOut: () => void
+  zoomIn: () => void
+  setZoom: (zoom: number) => void
+  resetZoom: () => void
 }
 
 const useZoomStore = create(
@@ -13,30 +14,29 @@ const useZoomStore = create(
     zoom: 100,
     zoomOut: () => {
       set((draft) => {
-        draft.zoom += 25;
-      });
+        draft.zoom += 25
+      })
     },
     zoomIn: () => {
       set((draft) => {
         if (draft.zoom - 25 < 1) {
-          draft.zoom = 1;
+          draft.zoom = 1
         } else {
-          draft.zoom -= 25;
+          draft.zoom -= 25
         }
-      });
+      })
     },
-    setZoom: (_zoom: any) => {
-      if (parseInt(_zoom) >= 1) {
+    setZoom: (zoom: number) => {
+      if (zoom >= 1) {
         set((draft) => {
-          draft.zoom = parseInt(_zoom);
-        });
+          draft.zoom = zoom
+        })
       }
     },
+    resetZoom: () => {
+      set({ zoom: 100 })
+    },
   }))
-);
+)
 
-export const  resetZoom =  () => {
-    useZoomStore.setState( { zoom: 100 });
-}
-
-export default useZoomStore;
+export default useZoomStore

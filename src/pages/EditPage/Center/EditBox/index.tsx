@@ -1,18 +1,18 @@
 import useEditStore, {
   updateAssemblyCmpsByDistance,
   updateSelectedCmpAttr,
-  updateSelectedCmpStyle
-} from "@/store/editStore"
-import type { MouseEvent } from "react"
-import styles from "./index.module.less"
-import { throttle, omit } from "lodash-es"
-import useZoomStore from "@/store/zoomStore"
-import StretchDots from "./StretchDots"
-import { isTextComponent } from "@/utils/const"
-import { useState, useEffect } from "react"
-import TextareaAutosize from "react-textarea-autosize"
-import { recordCanvasChangeHistory_2 } from "@/store/editStore"
-import Menu from "../Menu"
+  updateSelectedCmpStyle,
+} from '@/store/editStore'
+import type { MouseEvent } from 'react'
+import styles from './index.module.less'
+import { throttle, omit } from 'lodash-es'
+import useZoomStore from '@/store/zoomStore'
+import StretchDots from './StretchDots'
+import { isTextComponent } from '@/utils/const'
+import { useState, useEffect } from 'react'
+import TextareaAutosize from 'react-textarea-autosize'
+import { commitHistoryIfChanged } from '@/store/editStore'
+import Menu from '../Menu'
 
 export default function EditBox() {
   const zoom = useZoomStore((state) => state.zoom)
@@ -37,11 +37,11 @@ export default function EditBox() {
       return
     }
     const close = () => setMenuPos(null)
-    document.addEventListener("mousedown", close)
-    window.addEventListener("resize", close)
+    document.addEventListener('mousedown', close)
+    window.addEventListener('resize', close)
     return () => {
-      document.removeEventListener("mousedown", close)
-      window.removeEventListener("resize", close)
+      document.removeEventListener('mousedown', close)
+      window.removeEventListener('resize', close)
     }
   }, [menuPos])
 
@@ -65,13 +65,13 @@ export default function EditBox() {
     }, 10)
 
     const up = () => {
-      recordCanvasChangeHistory_2()
-      document.removeEventListener("mousemove", move)
-      document.removeEventListener("mouseup", up)
+      commitHistoryIfChanged()
+      document.removeEventListener('mousemove', move)
+      document.removeEventListener('mouseup', up)
     }
 
-    document.addEventListener("mousemove", move)
-    document.addEventListener("mouseup", up)
+    document.addEventListener('mousemove', move)
+    document.addEventListener('mouseup', up)
   }
 
   if (size === 0) {
@@ -113,7 +113,7 @@ export default function EditBox() {
         top,
         left,
         width,
-        height
+        height,
       }}
       onContextMenu={(e) => {
         // 屏蔽浏览器默认菜单，在鼠标位置打开自定义菜单
@@ -139,34 +139,34 @@ export default function EditBox() {
             style={{
               // 与包围盒严格对齐：EditBox 正好盖在组件上，
               // textarea 从 (0,0) 铺满，保证编辑态与展示态文字完全重合
-              position: "absolute",
+              position: 'absolute',
               top: 0,
               left: 0,
-              width: "100%",
-              boxSizing: "border-box",
+              width: '100%',
+              boxSizing: 'border-box',
               margin: 0,
               padding: 0,
-              border: "none",
-              outline: "none",
-              resize: "none",
-              cursor: "text",
-              whiteSpace: "pre-wrap",
+              border: 'none',
+              outline: 'none',
+              resize: 'none',
+              cursor: 'text',
+              whiteSpace: 'pre-wrap',
               // textarea 的浏览器默认字体不继承、默认背景为白色，
               // 这里重置为继承/透明，再用组件自身样式覆盖
-              font: "inherit",
-              backgroundColor: "transparent",
+              font: 'inherit',
+              backgroundColor: 'transparent',
               // 其余文字样式与 Cmp 内层 div 保持一致，
               // 位置/尺寸不透传（由 EditBox 定位、高度自动撑开）
               ...omit(selectedCmp.style, [
-                "position",
-                "top",
-                "left",
-                "width",
-                "height"
-              ])
+                'position',
+                'top',
+                'left',
+                'width',
+                'height',
+              ]),
             }}
             onChange={(e) => {
-              updateSelectedCmpAttr("value", e.target.value)
+              updateSelectedCmpAttr('value', e.target.value)
             }}
             onHeightChange={(height) => {
               updateSelectedCmpStyle({ height })

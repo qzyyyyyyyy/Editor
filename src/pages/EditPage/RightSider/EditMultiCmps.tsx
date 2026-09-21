@@ -1,34 +1,34 @@
-import Item from "@/lib/Item";
-import { editAssemblyStyle } from "@/store/editStore";
-import type { Style } from "@/store/editStoreTypes";
-import styles from "./edit.module.less";
+import Item from '@/lib/Item'
+import { editAssemblyStyle } from '@/store/editStore'
+import type { Style } from '@/store/editStoreTypes'
+import styles from './edit.module.less'
 
 export default function EditMultiCmps() {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const align = e.target.value;
-    let newStyle: Style = {};
+    const align = e.target.value
+    let newStyle: Style = {}
     switch (align) {
-      case "left":
-        newStyle.left = 0;
-        break;
-      case "right":
-        newStyle.right = 0;
-        break;
-      case "x-center":
-        newStyle.left = "center";
-        break;
-      case "top":
-        newStyle.top = 0;
-        break;
-      case "bottom":
-        newStyle.bottom = 0;
-        break;
-      case "y-center":
-        newStyle.top = "center";
-        break;
+      case 'left':
+        newStyle.left = 0
+        break
+      case 'right':
+        newStyle.right = 0
+        break
+      case 'x-center':
+        newStyle.left = 'center'
+        break
+      case 'top':
+        newStyle.top = 0
+        break
+      case 'bottom':
+        newStyle.bottom = 0
+        break
+      case 'y-center':
+        newStyle.top = 'center'
+        break
     }
-    editAssemblyStyle(newStyle);
-  };
+    editAssemblyStyle(newStyle)
+  }
 
   return (
     <div className={styles.main}>
@@ -46,5 +46,5 @@ export default function EditMultiCmps() {
         </select>
       </Item>
     </div>
-  );
+  )
 }

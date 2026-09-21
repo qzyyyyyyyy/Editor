@@ -5,7 +5,7 @@ const docCookies = {
     if (!sKey) return null
     const escaped = encodeURIComponent(sKey).replace(/[-.+*]/g, '\\$&')
     const match = document.cookie.match(
-      new RegExp('(?:^|;)\\s*' + escaped + '\\s*=\\s*([^;]*)'),
+      new RegExp('(?:^|;)\\s*' + escaped + '\\s*=\\s*([^;]*)')
     )
     return match ? decodeURIComponent(match[1]) : null
   },
@@ -15,7 +15,7 @@ const docCookies = {
     vEnd?: number | string | Date,
     sPath?: string,
     sDomain?: string,
-    bSecure?: boolean,
+    bSecure?: boolean
   ): boolean {
     if (!sKey || /^(?:expires|max-age|path|domain|secure)$/i.test(sKey)) {
       return false
@@ -55,7 +55,7 @@ const docCookies = {
     return new RegExp(
       '(?:^|;)\\s*' +
         encodeURIComponent(sKey).replace(/[-.+*]/g, '\\$&') +
-        '\\s*=',
+        '\\s*='
     ).test(document.cookie)
   },
   keys(): string[] {

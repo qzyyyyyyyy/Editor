@@ -1,16 +1,16 @@
-import classNames from "classnames"
-import { createPortal } from "react-dom"
-import { useLayoutEffect, useRef, useState } from "react"
-import type { MouseEvent as ReactMouseEvent } from "react"
+import classNames from 'classnames'
+import { createPortal } from 'react-dom'
+import { useLayoutEffect, useRef, useState } from 'react'
+import type { MouseEvent as ReactMouseEvent } from 'react'
 import {
   bringSelectedCmpToFront,
   delSelectedCmps,
   duplicateSelectedCmps,
   moveSelectedCmpDown,
   moveSelectedCmpUp,
-  sendSelectedCmpToBack
-} from "@/store/editStore"
-import styles from "./index.module.less"
+  sendSelectedCmpToBack,
+} from '@/store/editStore'
+import styles from './index.module.less'
 
 interface MenuProps {
   // 鼠标右键位置（视口坐标，配合 position: fixed 使用）
@@ -49,12 +49,12 @@ export default function Menu({ x, y, assemblySize, onClose }: MenuProps) {
   // Esc 关闭
   useLayoutEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+      if (e.key === 'Escape') {
         onClose()
       }
     }
-    document.addEventListener("keydown", onKeyDown)
-    return () => document.removeEventListener("keydown", onKeyDown)
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
   }, [onClose])
 
   if (assemblySize === 0) {
