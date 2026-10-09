@@ -1,8 +1,8 @@
 import type { ICmpWithKey } from '@/store/editStoreTypes'
 import type { MouseEvent } from 'react'
 import styles from './index.module.less'
-import { isTextComponent, isImgComponent } from '@/utils/const'
-import { Text, Img } from './CmpDetail'
+import { isTextComponent, isImgComponent, isGraphComponent } from '@/utils/const'
+import { Text, Img, Shape } from './CmpDetail'
 import classNames from 'classnames'
 import { pick, omit } from 'lodash-es'
 import { setCmpsSelected, setCmpSelected } from '@/store/editStore'
@@ -28,7 +28,20 @@ export default function Cmp(props: ICmpProps) {
 
   const outerStyle = pick(style, ['position', 'top', 'left', 'width', 'height'])
 
-  const innerStyle = omit(style, 'position', 'top', 'left')
+  // 图形组件的填充/描边交给 SVG，不在内层 div 上重复绘制，避免出现多余的背景色/边框
+  const innerStyle =
+    cmp.type === isGraphComponent
+      ? omit(
+          style,
+          'position',
+          'top',
+          'left',
+          'backgroundColor',
+          'borderColor',
+          'borderWidth',
+          'borderStyle'
+        )
+      : omit(style, 'position', 'top', 'left')
 
   return (
     <div
@@ -44,6 +57,15 @@ export default function Cmp(props: ICmpProps) {
             spread 传入 JSX，React 要求 key 必须显式写、不能 spread */}
         {cmp.type === isTextComponent && <Text value={cmp.value} />}
         {cmp.type === isImgComponent && <Img value={cmp.value} />}
+        {cmp.type === isGraphComponent && (
+          <Shape
+            shape={cmp.value || 'rect'}
+            fill={style.backgroundColor as string}
+            stroke={style.borderColor as string}
+            strokeWidth={style.borderWidth as number}
+            strokeStyle={style.borderStyle as string}
+          />
+        )}
       </div>
     </div>
   )

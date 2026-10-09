@@ -167,6 +167,60 @@ export default function EditCmp({ selectedCmp }: { selectedCmp: ICmpWithKey }) {
         </Item>
       )}
 
+      {/* 描边颜色：图形组件 (SVG stroke) */}
+      {style.borderColor !== undefined && (
+        <Item label="描边色:">
+          <InputColor
+            color={style.borderColor}
+            onChangeComplete={(e: {
+              rgb: { r: number; g: number; b: number; a?: number }
+            }) => {
+              handleStyleChange(null, {
+                name: 'borderColor',
+                value: `rgba(${Object.values(e.rgb).join(',')})`,
+              })
+            }}
+          />
+        </Item>
+      )}
+
+      {/* 描边宽度：图形组件 (SVG stroke-width) */}
+      {style.borderWidth !== undefined && (
+        <Item label="描边宽度:">
+          <input
+            type="number"
+            className={styles.itemRight}
+            value={style.borderWidth}
+            onChange={(e) => {
+              handleStyleChange(e, {
+                name: 'borderWidth',
+                value: parseInt(e.target.value) || 0,
+              })
+            }}
+          />
+        </Item>
+      )}
+
+      {/* 线型：图形组件 (SVG stroke-dasharray) */}
+      {style.borderStyle !== undefined && (
+        <Item label="线型:">
+          <select
+            className={styles.itemRight}
+            value={style.borderStyle}
+            onChange={(e) => {
+              handleStyleChange(e, {
+                name: 'borderStyle',
+                value: e.target.value,
+              })
+            }}
+          >
+            <option value="solid">实线</option>
+            <option value="dashed">虚线</option>
+            <option value="dotted">点线</option>
+          </select>
+        </Item>
+      )}
+
       {/* 文本颜色选择器 */}
       {style.color !== undefined && (
         <Item label="文本颜色:">

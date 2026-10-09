@@ -1,59 +1,54 @@
 import leftSideStyles from './leftSide.module.less'
 import { addCmp } from '@/store/editStore'
-import type { CSSProperties } from 'react'
-import { defaultComponentStyle, isGraphComponent } from '@/utils/const'
+import { isGraphComponent, SHAPES } from '@/utils/const'
+import { Shape } from '../Center/Cmp/CmpDetail'
 
-const defaultStyle: CSSProperties = {
-  ...defaultComponentStyle,
-  width: 120,
-  height: 120,
-  borderColor: 'blue',
-  backgroundColor: 'blue',
-}
-
-const settings = [
-  {
-    key: 'graph0',
-    value: '',
-    style: {
-      ...defaultStyle,
-      borderWidth: 1,
-      borderStyle: 'solid',
-      backgroundColor: 'transparent',
-    },
-  },
-  {
-    key: 'graph1',
-    value: '',
-    style: defaultStyle,
-  },
-]
+// 左侧图形面板预览尺寸
+const PREVIEW_SIZE = 64
 
 const GraphSider = () => {
   return (
-    <div className={leftSideStyles.main}>
+    <div
+      className={leftSideStyles.main}
+      style={{ overflowY: 'auto', maxHeight: '100%' }}
+    >
       <ul className={leftSideStyles.box}>
-        {settings.map((item) => (
-          <li
-            draggable={true}
-            key={item.key}
-            className={leftSideStyles.item}
-            onClick={() => addCmp({ ...item, type: isGraphComponent })}
-            onDragStart={(e) => {
-              e.dataTransfer.setData(
-                'drag-cap',
-                JSON.stringify({ ...item, type: isGraphComponent })
-              )
-            }}
-            style={{
-              width: item.style.width,
-              height: item.style.height,
-              backgroundColor: item.style.backgroundColor,
-              borderStyle: item.style.borderStyle,
-              borderColor: item.style.borderColor,
-            }}
-          ></li>
-        ))}
+        {SHAPES.map((shape) => {
+          const { defaultStyle } = shape
+          const cmpData = {
+            type: isGraphComponent,
+            value: shape.key,
+            style: defaultStyle,
+          }
+          return (
+            <li
+              draggable={true}
+              key={shape.key}
+              className={leftSideStyles.item}
+              onClick={() => addCmp(cmpData)}
+              onDragStart={(e) => {
+                e.dataTransfer.setData('drag-cap', JSON.stringify(cmpData))
+              }}
+              title={shape.label}
+            >
+              <div
+                style={{
+                  width: PREVIEW_SIZE,
+                  height: PREVIEW_SIZE,
+                }}
+              >
+                <Shape
+                  shape={shape.key}
+                  fill={defaultStyle.backgroundColor as string}
+                  stroke={defaultStyle.borderColor as string}
+                  strokeWidth={defaultStyle.borderWidth as number}
+                  strokeStyle={defaultStyle.borderStyle as string}
+                />
+              </div>
+              <span className={leftSideStyles.shapeLabel}>{shape.label}</span>
+            </li>
+          )
+        })}
       </ul>
     </div>
   )
