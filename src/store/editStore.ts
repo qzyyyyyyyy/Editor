@@ -30,6 +30,9 @@ export {
   moveSelectedCmpDown,
   bringSelectedCmpToFront,
   sendSelectedCmpToBack,
+  moveCmp,
+  toggleCmpVisible,
+  toggleCmpLocked,
 } from './editStore/slices/layerSlice'
 
 // selectionSlice
@@ -45,6 +48,7 @@ export {
   commitHistoryIfChanged,
   commitHistoryIfChanged as recordCanvasChangeHistory_2, // 兼容旧命名
   updateSelectedCmpStyle,
+  setSelectedCmpStyleNoHistory,
   updateSelectedCmpAttr,
   editAssemblyStyle,
 } from './editStore/slices/styleSlice'

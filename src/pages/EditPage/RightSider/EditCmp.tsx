@@ -238,6 +238,29 @@ export default function EditCmp({ selectedCmp }: { selectedCmp: ICmpWithKey }) {
         </Item>
       )}
 
+      {/* 旋转角度：所有组件通用，存为 CSS transform */}
+      <Item label="旋转角度:">
+        <input
+          type="number"
+          className={styles.itemRight}
+          min={-360}
+          max={360}
+          // 从 transform: rotate(Ndeg) 中解析出角度数字；无 transform 时显示 0
+          value={(() => {
+            const t = style.transform as string | undefined
+            const m = t?.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/)
+            return m ? parseFloat(m[1]) : 0
+          })()}
+          onChange={(e) => {
+            const deg = parseFloat(e.target.value) || 0
+            handleStyleChange(e, {
+              name: 'transform',
+              value: deg === 0 ? '' : `rotate(${deg}deg)`,
+            })
+          }}
+        />
+      </Item>
+
       {/* 点击跳转链接 */}
       <Item label="点击跳转:">
         <input

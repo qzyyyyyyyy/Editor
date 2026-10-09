@@ -8,16 +8,20 @@ import styles from './index.module.less'
 import { throttle, omit } from 'lodash-es'
 import useZoomStore from '@/store/zoomStore'
 import StretchDots from './StretchDots'
+import RotateDot from './RotateDot'
 import { isTextComponent } from '@/utils/const'
 import { useState, useEffect } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 import { commitHistoryIfChanged } from '@/store/editStore'
 import Menu from '../Menu'
+import { computeSnap } from '../snap'
+import useSnapStore from '../snapStore'
 
 export default function EditBox() {
   const zoom = useZoomStore((state) => state.zoom)
   const cmps = useEditStore((state) => state.canvas.cmps)
   const assembly = useEditStore((state) => state.assembly)
+  const canvasStyle = useEditStore((state) => state.canvas.style)
   const selectedCmp = cmps[Array.from(assembly)[0]]
   const size = assembly.size
   const [textareaFocused, setTextareaFocused] = useState(false)
@@ -46,26 +50,66 @@ export default function EditBox() {
   }, [menuPos])
 
   const onMouseDownOfCmp = (e: MouseEvent<HTMLDivElement>) => {
-    let startX = e.pageX
-    let startY = e.pageY
+    const startPageX = e.pageX
+    const startPageY = e.pageY
+
+    // 拖拽开始时的位置快照，用于计算绝对目标位置
+    const assemblyArr = Array.from(assembly)
+    const startPositions = assemblyArr.map((i) => ({ ...cmps[i].style }))
+    const first = startPositions[0]
+    let currentLeft = first.left as number
+    let currentTop = first.top as number
+
+    // 上一次的 guides，用于去重，避免无意义的 setGuides 触发重渲染
+    let lastGuidesKey = ''
 
     const move = throttle((e) => {
-      const x = e.pageX
-      const y = e.pageY
+      const totalDeltaX = (e.pageX - startPageX) * (100 / zoom)
+      const totalDeltaY = (e.pageY - startPageY) * (100 / zoom)
 
-      let disX = x - startX
-      let disY = y - startY
+      // 目标绝对位置 = 起始位置 + 鼠标总位移（不累积，避免吸附粘性）
+      let targetLeft = (first.left as number) + totalDeltaX
+      let targetTop = (first.top as number) + totalDeltaY
 
-      disX = disX * (100 / zoom)
-      disY = disY * (100 / zoom)
+      // 吸附计算：只对单选做吸附
+      if (assemblyArr.length === 1) {
+        const predStyle = {
+          ...first,
+          left: targetLeft,
+          top: targetTop,
+        }
+        const { snapX, snapY, guides } = computeSnap(
+          predStyle,
+          cmps,
+          assembly,
+          canvasStyle
+        )
+        targetLeft += snapX
+        targetTop += snapY
 
-      updateAssemblyCmpsByDistance({ top: disY, left: disX })
-      startX = x
-      startY = y
-    }, 10)
+        // guides 去重：只在内容变化时更新 store，减少 Canvas 重渲染
+        const guidesKey = guides
+          .map((g) => `${g.type}:${g.position}:${g.start}:${g.end}`)
+          .join('|')
+        if (guidesKey !== lastGuidesKey) {
+          lastGuidesKey = guidesKey
+          useSnapStore.getState().setGuides(guides)
+        }
+      }
+
+      // 增量 = 目标位置 - 当前位置，传给 store 更新
+      const disX = targetLeft - currentLeft
+      const disY = targetTop - currentTop
+      if (disX !== 0 || disY !== 0) {
+        updateAssemblyCmpsByDistance({ top: disY, left: disX })
+        currentLeft = targetLeft
+        currentTop = targetTop
+      }
+    }, 16)
 
     const up = () => {
       commitHistoryIfChanged()
+      useSnapStore.getState().setGuides([])
       document.removeEventListener('mousemove', move)
       document.removeEventListener('mouseup', up)
     }
@@ -104,6 +148,10 @@ export default function EditBox() {
   const width = right - left
   const height = bottom - top
 
+  // 单选时 EditBox 跟随组件旋转（多选时不旋转，保持简单清晰）
+  const singleTransform =
+    size === 1 && selectedCmp ? selectedCmp.style.transform : undefined
+
   return (
     <div
       className={styles.main}
@@ -114,6 +162,7 @@ export default function EditBox() {
         left,
         width,
         height,
+        transform: singleTransform,
       }}
       onContextMenu={(e) => {
         // 屏蔽浏览器默认菜单，在鼠标位置打开自定义菜单
@@ -188,6 +237,13 @@ export default function EditBox() {
         />
       )}
       <StretchDots zoom={zoom} style={{ width, height }} />
+      {/* 旋转手柄：仅单选且未锁定时显示；多选旋转语义复杂，暂不支持 */}
+      {size === 1 && selectedCmp.locked !== true && (
+        <RotateDot
+          width={width}
+          transform={selectedCmp.style.transform as string | undefined}
+        />
+      )}
     </div>
   )
 }

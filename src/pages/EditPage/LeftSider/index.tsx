@@ -1,17 +1,21 @@
 import classNames from 'classnames'
-import { memo, useState, useEffect } from 'react'
-import { UploadOutlined } from '@ant-design/icons'
+import { memo, useState } from 'react'
+import { UploadOutlined, AppstoreOutlined } from '@ant-design/icons'
 import styles from './index.module.less'
 import TextSider from './TextSider'
 import ImgSider from './ImgSider'
 import GraphSider from './GraphSider'
 import ImportSider from './ImportSider'
+import LayerSider from './LayerSider'
 import {
   isTextComponent,
   isImgComponent,
   isGraphComponent,
   isImportComponent,
 } from '@/utils/const'
+
+// 图层面板的侧栏标识（面板 id 与组件类型值共用一个编号空间）
+const isLayerPanel = 5
 
 const LeftSider = memo(() => {
   const [showSide, setShowSide] = useState(0)
@@ -23,16 +27,6 @@ const LeftSider = memo(() => {
       setShowSide(which || 0)
     }
   }
-
-  useEffect(() => {
-    const cancelShow = () => setShowSide(0)
-    document.getElementById('center')?.addEventListener('click', cancelShow)
-    return () => {
-      document
-        .getElementById('center')
-        ?.removeEventListener('click', cancelShow)
-    }
-  }, [])
 
   return (
     <div className={styles.main}>
@@ -77,12 +71,23 @@ const LeftSider = memo(() => {
           <UploadOutlined className={styles.cmpIcon} />
           <span className={styles.cmpText}>导入</span>
         </li>
+        <li
+          className={classNames(
+            styles.cmp,
+            showSide === isLayerPanel ? styles.selected : ''
+          )}
+          onClick={() => _setShowSide(isLayerPanel)}
+        >
+          <AppstoreOutlined className={styles.cmpIcon} />
+          <span className={styles.cmpText}>图层</span>
+        </li>
       </ul>
 
       {showSide === isTextComponent && <TextSider />}
       {showSide === isImgComponent && <ImgSider />}
       {showSide === isGraphComponent && <GraphSider />}
       {showSide === isImportComponent && <ImportSider />}
+      {showSide === isLayerPanel && <LayerSider />}
     </div>
   )
 })

@@ -10,6 +10,11 @@ export const updateAssemblyCmpsByDistance = (newStyle: Style) => {
     draft.assembly.forEach((index) => {
       const cmp = { ...draft.canvas.cmps[index] }
 
+      // 锁定的组件不可拖拽/缩放（如面板先选中后锁定，编辑框仍在但操作无效）
+      if (cmp.locked === true) {
+        return
+      }
+
       let invalid = false
       Object.entries(newStyle).forEach(([key, value]) => {
         if (
@@ -54,6 +59,19 @@ export const updateSelectedCmpStyle = (newStyle: Style) => {
       newStyle
     )
     recordCanvasChangeHistory(draft)
+  })
+}
+
+// 拖拽旋转过程中的静默样式更新（绝对值覆盖，不入历史）；
+// 结束时由调用方 commitHistoryIfChanged 统一入栈，与拖拽移动同一模式
+export const setSelectedCmpStyleNoHistory = (newStyle: Style) => {
+  useEditStore.setState((draft) => {
+    const index = selectedCmpIndexSelector(draft)
+    const cmp = draft.canvas.cmps[index]
+    if (!cmp || cmp.locked === true) {
+      return
+    }
+    Object.assign(cmp.style, newStyle)
   })
 }
 

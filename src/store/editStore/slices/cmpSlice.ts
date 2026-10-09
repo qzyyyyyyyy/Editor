@@ -36,10 +36,24 @@ export const addCmp = (cmp: ICmp) => {
 export const delSelectedCmps = () => {
   useEditStore.setState((draft) => {
     const assembly = draft.assembly
-    draft.canvas.cmps = draft.canvas.cmps.filter(
-      (_, index) => !assembly.has(index)
+    // 锁定的组件受保护，不被删除；过滤后存活组件下标前移，
+    // 用"旧下标 → 新位置"的映射重建 assembly，避免选中框错套
+    const kept = draft.canvas.cmps
+      .map((cmp, oldIndex) => ({ cmp, oldIndex }))
+      .filter(
+        ({ cmp, oldIndex }) => !(assembly.has(oldIndex) && cmp.locked !== true)
+      )
+    if (kept.length === draft.canvas.cmps.length) {
+      return
+    }
+    draft.canvas.cmps = kept.map(({ cmp }) => cmp)
+    draft.assembly = new Set(
+      kept
+        .map(({ oldIndex }, newIndex) =>
+          assembly.has(oldIndex) ? newIndex : -1
+        )
+        .filter((index) => index >= 0)
     )
-    draft.assembly.clear()
     recordCanvasChangeHistory(draft)
   })
 }

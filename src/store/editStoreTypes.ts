@@ -13,6 +13,10 @@ export interface ICmp {
   style: Style
   value: string
   onClick?: string
+  // 锁定后：画布上不可选中/拖拽/缩放/删除，仅可在图层面板解锁
+  locked?: boolean
+  // 隐藏后：画布与导出不渲染，仅在图层面板可见；undefined 视为显示
+  visible?: boolean
 }
 
 export interface ICmpWithKey extends ICmp {

@@ -7,3 +7,28 @@
   background-color: rgba(0, 87, 255, 0.8);
   border-radius: 50%;
 }
+
+// 旋转手柄：选中框顶部上方的圆形手柄
+.rotateDot {
+  z-index: 9999;
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background-color: #fff;
+  border: 2px solid rgba(0, 87, 255, 0.8);
+  border-radius: 50%;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+// 旋转手柄与选中框之间的连接线
+.rotateLine {
+  z-index: 9998;
+  position: absolute;
+  width: 2px;
+  background-color: rgba(0, 87, 255, 0.8);
+  pointer-events: none;
+}

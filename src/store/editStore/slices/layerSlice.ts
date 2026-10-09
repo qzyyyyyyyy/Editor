@@ -66,3 +66,78 @@ export const sendSelectedCmpToBack = () => {
     recordCanvasChangeHistory(draft)
   })
 }
+
+// ! 图层面板专用操作（按面板行的下标操作，不依赖选中态）
+
+// 图层面板拖拽排序：把 fromIndex 的组件移动到 toIndex
+// 移动后两侧组件的下标都会变化，同步修正 assembly
+export const moveCmp = (fromIndex: number, toIndex: number) => {
+  if (fromIndex === toIndex) {
+    return
+  }
+  useEditStore.setState((draft) => {
+    const cmps = draft.canvas.cmps
+    if (
+      fromIndex < 0 ||
+      toIndex < 0 ||
+      fromIndex >= cmps.length ||
+      toIndex >= cmps.length
+    ) {
+      return
+    }
+    const [cmp] = cmps.splice(fromIndex, 1)
+    cmps.splice(toIndex, 0, cmp)
+
+    // 修正所有选中下标：被拖动的组件新下标即 toIndex，
+    // 其余选中组件随 splice 位移（避免先 add 再 translate 导致二次平移）
+    const fixed = new Set<number>()
+    draft.assembly.forEach((i) => {
+      fixed.add(
+        i === fromIndex ? toIndex : translateIndex(i, fromIndex, toIndex)
+      )
+    })
+    draft.assembly = fixed
+    recordCanvasChangeHistory(draft)
+  })
+}
+
+// 计算某组件下标在 move(from→to) 后的新下标
+const translateIndex = (i: number, from: number, to: number): number => {
+  if (i === from) {
+    return to
+  }
+  // 被抽出的下标 left 一个空位，右侧组件左移一格
+  if (from < to) {
+    return i > from && i <= to ? i - 1 : i
+  }
+  // 插入方向相反：from 右侧组件右移一格
+  return i >= to && i < from ? i + 1 : i
+}
+
+// 切换组件显示/隐藏（undefined 视为显示）
+// 隐藏时若该组件正被选中，先取消选中，避免选中框悬在看不见的位置
+export const toggleCmpVisible = (index: number) => {
+  useEditStore.setState((draft) => {
+    const cmp = draft.canvas.cmps[index]
+    if (!cmp) {
+      return
+    }
+    cmp.visible = cmp.visible === false ? true : false
+    if (cmp.visible === false) {
+      draft.assembly.delete(index)
+    }
+    recordCanvasChangeHistory(draft)
+  })
+}
+
+// 切换组件锁定/解锁（undefined 视为未锁定）
+export const toggleCmpLocked = (index: number) => {
+  useEditStore.setState((draft) => {
+    const cmp = draft.canvas.cmps[index]
+    if (!cmp) {
+      return
+    }
+    cmp.locked = cmp.locked === true ? false : true
+    recordCanvasChangeHistory(draft)
+  })
+}

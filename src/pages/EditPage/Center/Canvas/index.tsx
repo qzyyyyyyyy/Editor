@@ -5,10 +5,12 @@ import Cmp from '../Cmp'
 import EditBox from '../EditBox'
 import type { DragEvent } from 'react'
 import useZoomStore from '@/store/zoomStore'
+import useSnapStore from '../snapStore'
 export default function Canvas() {
   const zoom = useZoomStore((state) => state.zoom)
   const canvas = useEditStore((state) => state.canvas)
   const assembly = useEditStore((state) => state.assembly)
+  const guides = useSnapStore((state) => state.guides)
   const { cmps } = canvas
   const onDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -59,6 +61,38 @@ export default function Canvas() {
           isSelected={assembly.has(index)}
         />
       ))}
+      {/* 吸附辅助线：画布坐标系，跟随 scale 变换，不拦截鼠标事件 */}
+      {guides.map((guide, i) =>
+        guide.type === 'vertical' ? (
+          <div
+            key={`v-${i}`}
+            style={{
+              position: 'absolute',
+              left: guide.position,
+              top: guide.start,
+              width: 1,
+              height: guide.end - guide.start,
+              background: '#ff4d4f',
+              pointerEvents: 'none',
+              zIndex: 99998,
+            }}
+          />
+        ) : (
+          <div
+            key={`h-${i}`}
+            style={{
+              position: 'absolute',
+              top: guide.position,
+              left: guide.start,
+              height: 1,
+              width: guide.end - guide.start,
+              background: '#ff4d4f',
+              pointerEvents: 'none',
+              zIndex: 99998,
+            }}
+          />
+        )
+      )}
       <EditBox />
     </div>
   )

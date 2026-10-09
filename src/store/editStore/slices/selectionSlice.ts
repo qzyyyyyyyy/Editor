@@ -2,11 +2,14 @@ import useEditStore from '@/store/editStore/index'
 
 // ! 选中组件
 
-// 全部选中
+// 全部选中（隐藏的组件不可见，跳过不选）
 export const setAllCmpsSelected = () => {
   useEditStore.setState((draft) => {
-    const len = draft.canvas.cmps.length
-    draft.assembly = new Set(Array.from({ length: len }, (_, i) => i))
+    draft.assembly = new Set(
+      draft.canvas.cmps
+        .map((cmp, i) => (cmp.visible === false ? -1 : i))
+        .filter((i) => i >= 0)
+    )
   })
 }
 
