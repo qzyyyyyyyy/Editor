@@ -1,5 +1,4 @@
-// Service 层类型定义
-
+// 前后端共享的数据模型（单一来源）
 export interface User {
   name: string
   password: string

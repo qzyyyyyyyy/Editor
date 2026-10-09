@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['**/dist']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -24,7 +24,7 @@ export default defineConfig([
       // 禁止使用 var
       'no-var': 'error',
       // 强制使用 === 而非 ==
-      'eqeqeq': ['error', 'always'],
+      eqeqeq: ['error', 'always'],
       // 禁止未使用的变量（下划线前缀除外）
       '@typescript-eslint/no-unused-vars': [
         'error',
@@ -37,7 +37,11 @@ export default defineConfig([
   },
   // 忽略兼容层文件（re-export 不需要 lint）
   {
-    files: ['src/store/editStore.ts', 'src/request/**/*.ts', 'src/utils/storage.ts'],
+    files: [
+      'apps/editor/src/store/editStore.ts',
+      'apps/editor/src/services/types.ts',
+      'apps/editor/src/services/storage.ts',
+    ],
     rules: {
       '@typescript-eslint/no-unused-vars': 'off',
     },
