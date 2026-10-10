@@ -1,34 +1,39 @@
 import { Button, Form, Input, Checkbox, Modal, message } from 'antd'
-import { login, logout, register } from '@/services'
-import docCookies from '../utils/cookies'
+import {
+  login,
+  logout,
+  register,
+  isAuthenticated,
+  getUsername,
+} from '@/services'
 
 export default function Login() {
   const [messageApi, contextHolder] = message.useMessage()
 
   // 校验登录
-  const auth = docCookies.getItem('sessionId')
-  const name = docCookies.getItem('name')
+  const authed = isAuthenticated()
+  const name = getUsername()
 
   const handleOk = () => {
     window.location.reload()
   }
 
   // 用户已经登录，显示登录信息
-  if (auth) {
+  if (authed) {
     return (
       <>
         {contextHolder}
         <Button
           style={{ float: 'right', marginTop: 16 }}
-          onClick={() =>
-            logout(
-              () => {
-                messageApi.success('已退出登录')
-                handleOk()
-              },
-              (msg) => messageApi.error(msg)
-            )
-          }
+          onClick={async () => {
+            try {
+              await logout()
+              messageApi.success('已退出登录')
+              handleOk()
+            } catch (err) {
+              messageApi.error((err as Error).message)
+            }
+          }}
         >
           {name} 退出登录
         </Button>
@@ -37,7 +42,7 @@ export default function Login() {
   }
 
   // 用户未登录，显示登录/注册弹窗
-  const onFinish = ({
+  const onFinish = async ({
     name,
     password,
     register_login,
@@ -46,40 +51,24 @@ export default function Login() {
     password: string
     register_login: boolean
   }) => {
-    if (register_login) {
-      registerAndLogin({ name, password })
-    } else {
-      login(
-        { name, password },
-        () => {
-          messageApi.success('登录成功')
-          handleOk()
-        },
-        (msg) => messageApi.error(msg)
-      )
+    try {
+      if (register_login) {
+        await register({ name, password })
+        messageApi.success('注册成功，正在登录...')
+        await login({ name, password })
+        messageApi.success('登录成功')
+      } else {
+        await login({ name, password })
+        messageApi.success('登录成功')
+      }
+      handleOk()
+    } catch (err) {
+      messageApi.error((err as Error).message)
     }
   }
 
   const onFinishFailed = () => {
     messageApi.warning('请先完整填写用户名和密码')
-  }
-
-  const registerAndLogin = (values: { name: string; password: string }) => {
-    register(
-      values,
-      () => {
-        messageApi.success('注册成功，正在登录...')
-        login(
-          values,
-          () => {
-            messageApi.success('登录成功')
-            handleOk()
-          },
-          (msg) => messageApi.error(msg)
-        )
-      },
-      (msg) => messageApi.error(msg)
-    )
   }
 
   return (

@@ -1,63 +1,50 @@
 // 画布 Service（远端实现）：通过 HTTP API 调用后端
-// 接口形态与本地 canvasService 保持一致，调用方无需感知切换
+// 实现 ICanvasService 接口，与本地 canvasService 签名完全一致
 
 import { http } from './http'
 import type { CanvasItem } from './types'
+import type { ICanvasService } from './interfaces'
 
 export type ListItem = CanvasItem
 
-// 按 id 获取单条画布记录
-export async function getCanvasById(id: number): Promise<ListItem | undefined> {
-  const res = await http.get(`/canvases/${id}`)
-  return res.data.data as ListItem
-}
+export const canvasService: ICanvasService = {
+  // 按 id 获取单条画布记录
+  async getCanvasById(id: number): Promise<ListItem | undefined> {
+    const res = await http.get(`/canvases/${id}`)
+    return res.data.data as ListItem
+  },
 
-// 获取列表
-export function getCanvasList(
-  keyword: string,
-  onSuccess?: (res: { content: ListItem[] }) => void,
-  onError?: (msg: string) => void
-): void {
-  http
-    .get('/canvases', { params: { keyword: keyword || undefined } })
-    .then((res) => {
-      const list = (res.data.data as ListItem[]) || []
-      onSuccess?.({ content: list })
+  // 获取列表
+  async getCanvasList(keyword: string): Promise<ListItem[]> {
+    const res = await http.get('/canvases', {
+      params: { keyword: keyword || undefined },
     })
-    .catch((err: Error) => {
-      onError?.(err.message)
-    })
-}
+    return (res.data.data as ListItem[]) || []
+  },
 
-// 删除
-export function del(
-  payload: { id: number },
-  onSuccess?: () => void,
-  onError?: (msg: string) => void
-): void {
-  http
-    .delete(`/canvases/${payload.id}`)
-    .then(() => onSuccess?.())
-    .catch((err: Error) => onError?.(err.message))
-}
+  // 删除
+  async del(id: number): Promise<void> {
+    await http.delete(`/canvases/${id}`)
+  },
 
-// 保存画布（新建或更新），返回保存后的 id
-export function saveCanvas(payload: {
-  id: number | null
-  type: string
-  title: string
-  content: string
-}): Promise<number> {
-  const requestBody = {
-    type: payload.type,
-    title: payload.title,
-    content: payload.content,
-  }
+  // 保存画布（新建或更新），返回保存后的 id
+  async saveCanvas(payload: {
+    id: number | null
+    type: string
+    title: string
+    content: string
+  }): Promise<number> {
+    const requestBody = {
+      type: payload.type,
+      title: payload.title,
+      content: payload.content,
+    }
 
-  if (payload.id != null) {
-    return http
-      .put(`/canvases/${payload.id}`, requestBody)
-      .then(() => payload.id as number)
-  }
-  return http.post('/canvases', requestBody).then((res) => res.data.data.id as number)
+    if (payload.id != null) {
+      await http.put(`/canvases/${payload.id}`, requestBody)
+      return payload.id
+    }
+    const res = await http.post('/canvases', requestBody)
+    return res.data.data.id as number
+  },
 }

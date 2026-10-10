@@ -7,14 +7,13 @@ export default function ListPage() {
   const [messageApi, contextHolder] = message.useMessage()
   const [list, setList] = useState<ListItem[]>([])
 
-  const fresh = () => {
-    getCanvasList(
-      '',
-      (res) => {
-        setList(res.content || [])
-      },
-      (msg) => messageApi.error(msg)
-    )
+  const fresh = async () => {
+    try {
+      const data = await getCanvasList('')
+      setList(data)
+    } catch (err) {
+      messageApi.error((err as Error).message)
+    }
   }
 
   useEffect(() => {
@@ -23,15 +22,14 @@ export default function ListPage() {
 
   const editUrl = (item: ListItem) => `/?id=${item.id}&type=${item.type}`
 
-  const handleDelete = (id: number) => {
-    del(
-      { id },
-      () => {
-        messageApi.success('删除成功')
-        fresh()
-      },
-      (msg) => messageApi.error(msg)
-    )
+  const handleDelete = async (id: number) => {
+    try {
+      await del(id)
+      messageApi.success('删除成功')
+      fresh()
+    } catch (err) {
+      messageApi.error((err as Error).message)
+    }
   }
 
   const columns = [
