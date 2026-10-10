@@ -3,7 +3,7 @@ import { getDefaultCanvas } from '../getDefaultCanvas'
 import { recordCanvasChangeHistory } from '../../historySlice'
 import useZoomStore from '../../zoomStore'
 import useEditStore from '@/store/editStore/index'
-import { saveCanvas as saveCanvasService } from '@/services/canvasService'
+import { saveCanvas as saveCanvasService } from '@/services'
 
 // 将 localStorage 的 content 字符串还原为完整 ICanvas
 // 与默认画布合并，兼容脏数据（如种子记录的 "{}"）
@@ -48,10 +48,13 @@ export const clearCanvas = () => {
   useZoomStore.getState().resetZoom()
 }
 
-// 保存画布到 localStorage
+// 保存画布
 // id 为 null → 新建；有值 → 更新已有记录
 // 返回保存后的 id，供调用方跳转/刷新使用
-export const saveCanvas = (id: number | null, type: string): number => {
+export const saveCanvas = async (
+  id: number | null,
+  type: string
+): Promise<number> => {
   const canvas = useEditStore.getState().canvas
   const content = JSON.stringify(canvas)
   return saveCanvasService({ id, type, title: canvas.title, content })

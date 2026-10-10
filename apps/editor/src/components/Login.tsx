@@ -1,5 +1,5 @@
 import { Button, Form, Input, Checkbox, Modal, message } from 'antd'
-import { login, logout, register } from '@/services/authService'
+import { login, logout, register } from '@/services'
 import docCookies from '../utils/cookies'
 
 export default function Login() {

@@ -36,8 +36,8 @@ export default function Header() {
   const scale = useHeaderScale()
 
   // 页面的新增与编辑更新
-  const save = () => {
-    const savedId = saveCanvas(id, type)
+  const save = async () => {
+    const savedId = await saveCanvas(id, type)
     if (id === null) {
       // 新增：保存后跳转到带新 id 的 URL，replace 避免在历史中留下无 id 的中间态
       navigate(`?id=${savedId}`, { replace: true })
@@ -45,8 +45,8 @@ export default function Header() {
     }
   }
 
-  const saveAndPreview = () => {
-    const savedId = saveCanvas(id, type)
+  const saveAndPreview = async () => {
+    const savedId = await saveCanvas(id, type)
     message.success('保存成功')
 
     if (id === null) {

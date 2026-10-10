@@ -4,19 +4,28 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "pnpm -F @trouble/editor dev",
+    "dev": "concurrently -n client,server -c blue,green \"pnpm -F @trouble/editor dev\" \"pnpm -F @trouble/server dev\"",
+    "dev:client": "pnpm -F @trouble/editor dev",
+    "dev:server": "pnpm -F @trouble/server dev",
     "build": "pnpm -F @trouble/editor build",
     "preview": "pnpm -F @trouble/editor preview",
     "typecheck": "pnpm -F @trouble/editor typecheck",
+    "migrate": "pnpm -F @trouble/server migrate",
     "lint": "eslint ."
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "concurrently": "^9.1.2",
     "eslint": "^10.9.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.4",
     "globals": "^17.11.0",
     "prettier": "^3.9.8",
     "typescript-eslint": "^8.67.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }

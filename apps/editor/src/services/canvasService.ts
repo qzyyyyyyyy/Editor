@@ -7,8 +7,9 @@ import type { CanvasItem } from './types'
 export type ListItem = CanvasItem
 
 // 按 id 获取单条画布记录，不存在返回 undefined
-export function getCanvasById(id: number): ListItem | undefined {
-  return getCanvasListData().find((i) => i.id === id)
+export function getCanvasById(id: number): Promise<ListItem | undefined> {
+  const item = getCanvasListData().find((i) => i.id === id)
+  return Promise.resolve(item)
 }
 
 // 获取列表
@@ -49,7 +50,7 @@ export function saveCanvas(payload: {
   type: string
   title: string
   content: string
-}): number {
+}): Promise<number> {
   const list = getCanvasListData()
   const existing =
     payload.id != null ? list.find((item) => item.id === payload.id) : undefined
@@ -72,5 +73,5 @@ export function saveCanvas(payload: {
     })
   }
   saveCanvasList(list)
-  return savedId
+  return Promise.resolve(savedId)
 }

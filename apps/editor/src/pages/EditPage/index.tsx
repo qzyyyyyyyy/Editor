@@ -8,7 +8,7 @@ import Header from './Header'
 import { useCanvasId } from '@/store/hooks'
 import { loadCanvas, resetCanvas } from '@/store/editStore'
 import useZoomStore from '@/store/zoomStore'
-import { getCanvasById } from '@/services/canvasService'
+import { getCanvasById } from '@/services'
 
 export default function EditPage() {
   const id = useCanvasId()
@@ -20,11 +20,17 @@ export default function EditPage() {
       resetCanvas()
       return
     }
-    const record = getCanvasById(id)
-    if (record) {
-      loadCanvas(record.content)
-    } else {
-      resetCanvas()
+    let cancelled = false
+    void getCanvasById(id).then((record) => {
+      if (cancelled) return
+      if (record) {
+        loadCanvas(record.content)
+      } else {
+        resetCanvas()
+      }
+    })
+    return () => {
+      cancelled = true
     }
   }, [id])
 

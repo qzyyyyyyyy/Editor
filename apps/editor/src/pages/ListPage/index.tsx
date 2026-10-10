@@ -1,7 +1,7 @@
 import { Card, Divider, Table, Space, Button, message } from 'antd'
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { getCanvasList, del, type ListItem } from '@/services/canvasService'
+import { getCanvasList, del, type ListItem } from '@/services'
 
 export default function ListPage() {
   const [messageApi, contextHolder] = message.useMessage()

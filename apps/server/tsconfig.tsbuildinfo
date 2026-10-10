@@ -1,0 +1,1 @@
+{"root":["./src/app.ts","./src/index.ts","./src/config/env.ts","./src/db/index.ts","./src/db/migrate.ts","./src/middlewares/auth.ts","./src/middlewares/errorhandler.ts","./src/routes/auth.routes.ts","./src/routes/canvases.routes.ts","./src/routes/index.ts","./src/services/authservice.ts","./src/services/canvasservice.ts"],"version":"6.0.2"}
