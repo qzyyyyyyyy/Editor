@@ -88,8 +88,7 @@ export function computeSnap(
       if (dist < bestDistX) {
         bestDistX = dist
         bestSnapX = ref.pos - edge
-        bestXRef = ref
-      }
+        bestXRef = ref 
     }
   }
 
